@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import fire from '../config/Fire'
+import ErrorMsg from './ErrorMsg'
 
 class Login extends Component {
   constructor(props) {
@@ -9,7 +10,8 @@ class Login extends Component {
     this.signup = this.signup.bind(this)
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      error: null
     }
   }
 
@@ -21,6 +23,7 @@ class Login extends Component {
     e.preventDefault()
     fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch((error) => {
       console.log(error)
+      this.setState({error: error.message})
     })
   }
 
@@ -32,6 +35,12 @@ class Login extends Component {
   }
 
   render() {
+    let errorMsg = null
+
+    if (this.state.error) {
+      errorMsg = <ErrorMsg msg={this.state.error} />
+    }
+
     return (
       <div className="col-md-6">
         <form>
@@ -53,6 +62,7 @@ class Login extends Component {
           <button onClick={this.signup}>
             Signup
           </button>
+          {errorMsg}
         </form>
       </div>
     )
