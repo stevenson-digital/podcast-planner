@@ -7,8 +7,8 @@ const EpisodeList = ({episodes}) => {
     <div className="c-EpisodeList">
       {episodes && episodes.map(episode => {
         return (
-          <Link to={'/episode/' + episode.id}>
-            <EpisodeSummary episode={episode} key={episode.id} />
+          <Link to={'/episode/' + episode.id} key={episode.id}>
+            <EpisodeSummary episode={episode} />
           </Link>
         )
       })}
