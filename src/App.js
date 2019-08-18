@@ -1,36 +1,27 @@
 import React, { Component } from 'react'
-import fire from './config/Fire'
-import Login from './components/Login'
-import Home from './components/Home'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import Navbar from './components/layout/Navbar'
+import Dashboard from './components/dashboard/Dashboard'
+import EpisodeDetails from './components/episodes/EpisodeDetails'
+import SignIn from './components/auth/SignIn'
+import SignUp from './components/auth/SignUp'
+import CreateEpisode from './components/episodes/CreateEpisode'
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = ({
-      user: null
-    })
-    this.authListener = this.authListener.bind(this)
-  }
-
-  componentDidMount() {
-    this.authListener()
-  }
-
-  authListener() {
-    fire.auth().onAuthStateChanged((user) => {
-      if (user) {
-        this.setState({user})
-      } else {
-        this.setState({user: null})
-      }
-    })
-  }
-
   render() {
     return (
-      <div className="App">
-        {this.state.user ? ( <Home />) : (<Login />)}
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <Navbar />
+          <Switch>
+            <Route exact path='/' component={Dashboard} />
+            <Route path='/episode/:id' component={EpisodeDetails} />
+            <Route path='/signin' component={SignIn} />
+            <Route path='/signup' component={SignUp} />
+            <Route path='/create' component={CreateEpisode} />
+          </Switch>
+        </div>
+      </BrowserRouter>
     )
   }
 }

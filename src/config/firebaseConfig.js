@@ -1,4 +1,6 @@
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+import 'firebase/auth'
 
 var firebaseConfig = {
   apiKey: "AIzaSyA6G6WJ9e9P5hSyvznwhBiiFzsSDDF6g54",
@@ -8,7 +10,9 @@ var firebaseConfig = {
   storageBucket: "",
   messagingSenderId: "445914579962",
   appId: "1:445914579962:web:76ad5b189cb4f30d"
-};
-const fire = firebase.initializeApp(firebaseConfig)
+}
 
-export default fire
+firebase.initializeApp(firebaseConfig)
+firebase.firestore().settings({timestampsInSnapshots: true})
+
+export default firebase
