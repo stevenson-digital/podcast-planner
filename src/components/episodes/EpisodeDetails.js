@@ -2,9 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
+import { Redirect } from 'react-router-dom'
 
 const EpisodeDetails = (props) => {
-  const { episode } = props
+  const { episode, auth } = props
+  if (!auth.uid) return <Redirect to="/signin" />
 
   if (episode) {
     return (
@@ -37,7 +39,8 @@ const mapStateToProps = (state, ownProps) => {
   const episode = episodes ? episodes[id] : null
 
   return {
-    episode: episode
+    episode: episode,
+    auth: state.firebase.auth
   }
 }
 

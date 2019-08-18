@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { createEpisode } from '../../store/actions/episodeActions'
+import { Redirect } from 'react-router-dom'
 
 class CreateEpisode extends Component {
   state = {
@@ -18,6 +19,9 @@ class CreateEpisode extends Component {
   }
 
   render() {
+    const { auth } = this.props
+    if (!auth.uid) return <Redirect to="/signin" />
+
     return (
       <div className="c-CreateEpisode">
         <form onSubmit={this.handleOnSubmit} className="c-CreateEpisode__form">
@@ -41,10 +45,16 @@ class CreateEpisode extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    auth: state.firebase.auth
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     createEpisode: (episode) => dispatch(createEpisode(episode))
   }
 }
 
-export default connect(null, mapDispatchToProps)(CreateEpisode)
+export default connect(mapStateToProps, mapDispatchToProps)(CreateEpisode)
