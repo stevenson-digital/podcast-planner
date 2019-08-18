@@ -10,8 +10,13 @@ const episodeReducer = (state = initState, action) => {
   switch (action.type) {
     case 'CREATE_EPISODE':
       console.log('created episode', action.episode)
+      return state
+    case 'CREATE_EPISODE_ERROR':
+      console.log('created episode error', action.error)
+      return state
+    default:
+      return state
   }
-  return state
 }
 
 export default episodeReducer
