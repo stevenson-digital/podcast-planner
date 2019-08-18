@@ -1,22 +1,49 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { firestoreConnect } from 'react-redux-firebase'
+import { compose } from 'redux'
 
 const EpisodeDetails = (props) => {
-  const id = props.match.params.id
-  return (
-    <div className="c-EpisodeDetails">
-      <div className="c-EpisodeDetails__content">
-        <div className="c-EpisodeDetails__title">
-          Episode Title ({id})
+  const { episode } = props
+
+  if (episode) {
+    return (
+      <div className="c-EpisodeDetails">
+        <div className="c-EpisodeDetails__content">
+          <div className="c-EpisodeDetails__title">
+            {episode.title}
+          </div>
+          <p className="c-EpisodeDetails__desc">
+          {episode.content}
+          </p>
+          <p className="c-EpisodeDetails__date">
+            25/06/2020
+          </p>
         </div>
-        <p className="c-EpisodeDetails__desc">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc pretium viverra nulla id vestibulum. Praesent luctus leo ac odio bibendum dignissim.
-        </p>
-        <p className="c-EpisodeDetails__date">
-          25/06/2020
-        </p>
       </div>
-    </div>
-  )
+    )
+  } else {
+    return (
+      <div>
+        <p>Loading episode</p>
+      </div>
+    )
+  }
 }
 
-export default EpisodeDetails
+const mapStateToProps = (state, ownProps) => {
+  const id = ownProps.match.params.id
+  const episodes = state.firestore.data.episodes
+  const episode = episodes ? episodes[id] : null
+
+  return {
+    episode: episode
+  }
+}
+
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect([
+    { collection: 'episodes' }
+  ])
+)(EpisodeDetails)
