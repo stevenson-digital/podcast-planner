@@ -13,7 +13,10 @@ class Home extends Component {
 
   render() {
     return (
-      <h1>Home screen after login</h1>
+      <div>
+        <h1>Home screen after login</h1>
+        <button onClick={this.logout}>Logout</button>
+      </div>
     )
   }
 }
