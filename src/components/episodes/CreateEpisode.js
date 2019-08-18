@@ -16,6 +16,7 @@ class CreateEpisode extends Component {
   handleOnSubmit = (e) => {
     e.preventDefault()
     this.props.createEpisode(this.state)
+    this.props.history.push('/')
   }
 
   render() {

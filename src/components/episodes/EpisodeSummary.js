@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 
 const EpisodeSummary = ({episode}) => {
   return (
@@ -7,7 +8,7 @@ const EpisodeSummary = ({episode}) => {
         {episode.title}
       </h2>
       <p className="c-EpisodeSummary__date">
-        02/09/2019
+        Plan created: {moment(episode.createdAt.toDate()).calendar()}
       </p>
     </div>
   )
