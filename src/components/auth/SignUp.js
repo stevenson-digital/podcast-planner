@@ -8,7 +8,8 @@ class SignUp extends Component {
     email: '',
     password: '',
     firstName: '',
-    lastName: ''
+    lastName: '',
+    showName: ''
   }
 
   handleOnChange = (e) => {
@@ -17,11 +18,17 @@ class SignUp extends Component {
 
   handleOnSubmit = (e) => {
     e.preventDefault()
+    this.validateForm()
+  }
+
+  validateForm() {
+    // console.log('validateForm()')
     this.props.signUp(this.state)
   }
 
   render() {
     const { auth, authError } = this.props
+
     if (auth.uid) return <Redirect to="/" />
 
     return (
@@ -31,26 +38,49 @@ class SignUp extends Component {
             Sign Up
           </h2>
           <div className="c-SignUp__form-row">
-            <label htmlFor="firstName">First Name</label>
-            <input type="text" id="firstName" onChange={this.handleOnChange} />
+            <label htmlFor="firstName">
+              First Name
+            </label>
+            <input type="text" id="firstName" onChange={this.handleOnChange} required />
           </div>
           <div className="c-SignUp__form-row">
-            <label htmlFor="lastName">Last Name</label>
-            <input type="text" id="lastName" onChange={this.handleOnChange} />
+            <label htmlFor="lastName">
+              Last Name
+            </label>
+            <input type="text" id="lastName" onChange={this.handleOnChange} required />
           </div>
           <div className="c-SignUp__form-row">
-            <label htmlFor="email">Email</label>
-            <input type="email" id="email" onChange={this.handleOnChange} />
+            <label htmlFor="email">
+              Email
+            </label>
+            <input type="email" id="email" onChange={this.handleOnChange} required />
           </div>
           <div className="c-SignUp__form-row">
-            <label htmlFor="password">Password</label>
-            <input type="password" id="password" onChange={this.handleOnChange} />
+            <label htmlFor="showName">
+              Show Name
+              <span>(The name of your podcast)</span>
+            </label>
+            <input type="text" id="showName" onChange={this.handleOnChange} required />
           </div>
           <div className="c-SignUp__form-row">
-            <button type="submit">Sign up</button>
+            <label htmlFor="password">
+              Password
+            </label>
+            <input type="password" id="password" onChange={this.handleOnChange} required />
+          </div>
+          <div className="c-SignUp__form-row">
+            <label htmlFor="confirmPassword">
+              Confirm Password
+            </label>
+            <input type="password" id="confirmPassword" onChange={this.handleOnChange} required />
+          </div>
+          <div className="c-SignUp__form-row">
+            <button type="submit">
+              Sign up
+            </button>
           </div>
           <div>
-            {authError ? <p>{authError}</p> : null}
+            { authError ? <p>{authError}</p> : null }
           </div>
         </form>
       </div>
