@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { signUp } from '../../store/actions/authActions'
+import { signUp, checkShowExists } from '../../store/actions/authActions'
+import { reduxFirestore, getFirestore } from 'redux-firestore'
 
 class SignUp extends Component {
   state = {
@@ -25,17 +26,28 @@ class SignUp extends Component {
 
   validateForm() {
     let valid = true
+    const self = this
+
     // Check if the show name has already been taken
+    const firestore = getFirestore()
+    const showID = this.state.showName.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, '-').replace("'", '').toLowerCase()
 
-    // Check password fields match
-    if (this.state.password != this.state.confirmPassword) {
-      valid = false
-      this.setState({validationError: 'Passwords must match'})
-    }
-
-    if (valid) {
-      // this.props.signUp(this.state)
-    }
+    firestore.collection('shows').doc(showID).get()
+      .then((doc) => {
+        if (doc.exists) {
+          self.setState({validationError: 'Show name is already taken'})
+        } else {
+          // Check password fields match
+          if (self.state.password != self.state.confirmPassword) {
+            valid = false
+            self.setState({validationError: 'Passwords must match'})
+          }
+      
+          if (valid) {
+            self.props.signUp(self.state)
+          }
+        }
+      })
   }
 
   render() {
