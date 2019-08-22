@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "dayjs": "^1.8.15",
     "firebase": "^6.4.0",
-    "moment": "^2.24.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-redux": "^5.1.1",

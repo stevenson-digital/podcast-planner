@@ -1,5 +1,5 @@
 import React from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 const Notifications = ({ notifications }) => {
   return (
@@ -10,7 +10,7 @@ const Notifications = ({ notifications }) => {
             return (
               <li key={item.id} className="c-Notifications__list-item">
                 <p>{item.user} {item.content}</p>
-                <p>{moment(item.time.toDate()).fromNow()}</p>
+                <p>{dayjs(item.time.toDate()).format('HH:mm (DD/MM/YYYY)')}</p>
               </li>
             )
           })}

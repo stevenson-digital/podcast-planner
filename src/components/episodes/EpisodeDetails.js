@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
 import { Redirect } from 'react-router-dom'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 const EpisodeDetails = (props) => {
   const { episode, auth } = props
@@ -20,7 +20,7 @@ const EpisodeDetails = (props) => {
           {episode.content}
           </p>
           <p className="c-EpisodeDetails__date">
-            Plan created: {moment(episode.createdAt.toDate()).calendar()}
+            Air Date: currently 'createdAt' - {dayjs(episode.createdAt.toDate()).format('DD/MM/YYYY')}
           </p>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 const EpisodeSummary = ({episode}) => {
   return (
@@ -8,7 +8,7 @@ const EpisodeSummary = ({episode}) => {
         {episode.title}
       </h2>
       <p className="c-EpisodeSummary__date">
-        Plan created: {moment(episode.createdAt.toDate()).calendar()}
+        Air Date: currently 'createdAt' - {dayjs(episode.createdAt.toDate()).format('DD/MM/YYYY')}
       </p>
     </div>
   )
