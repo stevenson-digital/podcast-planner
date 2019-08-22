@@ -7,9 +7,11 @@ class SignUp extends Component {
   state = {
     email: '',
     password: '',
+    confirmPassword: '',
     firstName: '',
     lastName: '',
-    showName: ''
+    showName: '',
+    validationError: ''
   }
 
   handleOnChange = (e) => {
@@ -22,8 +24,18 @@ class SignUp extends Component {
   }
 
   validateForm() {
-    // console.log('validateForm()')
-    this.props.signUp(this.state)
+    let valid = true
+    // Check if the show name has already been taken
+
+    // Check password fields match
+    if (this.state.password != this.state.confirmPassword) {
+      valid = false
+      this.setState({validationError: 'Passwords must match'})
+    }
+
+    if (valid) {
+      // this.props.signUp(this.state)
+    }
   }
 
   render() {
@@ -81,6 +93,7 @@ class SignUp extends Component {
           </div>
           <div>
             { authError ? <p>{authError}</p> : null }
+            { this.state.validationError ? <p>{this.state.validationError}</p> : null }
           </div>
         </form>
       </div>
