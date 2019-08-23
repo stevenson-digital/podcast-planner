@@ -6,6 +6,7 @@ import EpisodeDetails from './components/episodes/EpisodeDetails'
 import SignIn from './components/auth/SignIn'
 import SignUp from './components/auth/SignUp'
 import CreateEpisode from './components/episodes/CreateEpisode'
+import ForgotPassword from './components/auth/ForgotPassword'
 
 class App extends Component {
   render() {
@@ -19,6 +20,7 @@ class App extends Component {
             <Route path='/signin' component={SignIn} />
             <Route path='/signup' component={SignUp} />
             <Route path='/create' component={CreateEpisode} />
+            <Route path='/forgot-password' component={ForgotPassword} />
           </Switch>
         </div>
       </BrowserRouter>

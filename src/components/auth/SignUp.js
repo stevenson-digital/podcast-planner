@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { signUp, checkShowExists } from '../../store/actions/authActions'
-import { reduxFirestore, getFirestore } from 'redux-firestore'
+import { signUp } from '../../store/actions/authActions'
+import { getFirestore } from 'redux-firestore'
 
 class SignUp extends Component {
   state = {
@@ -38,7 +38,7 @@ class SignUp extends Component {
           self.setState({validationError: 'Show name is already taken'})
         } else {
           // Check password fields match
-          if (self.state.password != self.state.confirmPassword) {
+          if (self.state.password !== self.state.confirmPassword) {
             valid = false
             self.setState({validationError: 'Passwords must match'})
           }
