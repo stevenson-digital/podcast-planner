@@ -104,6 +104,7 @@ export const setUserLevelAndActiveShow = () => {
       firestore.collection('episodes')
       .where('showID', '==', activeShowID)
       .orderBy('createdAt', 'desc')
+      .limit(5)
       .get()
       .then(snapshot => {
         let episodes = []
