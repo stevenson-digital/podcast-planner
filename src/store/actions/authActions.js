@@ -56,6 +56,7 @@ export const addShow = (showName, showOwner) => {
     const showID = showName.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, '-').replace("'", '').toLowerCase()
     
     firestore.collection('shows').doc(showID).set({
+      id: showID,
       showName: showName,
       showOwner: showOwner
     }).then(() => {

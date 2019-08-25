@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 // import { connect } from 'react-redux';
 // import { ForgotPassword, checkShowExists } from '../../store/actions/authActions'
-// import { reduxFirestore, getFirestore } from 'redux-firestore'
+// import { getFirebase } from 'redux-firestore'
 
 class ForgotPassword extends Component {
   state = {
@@ -14,7 +14,13 @@ class ForgotPassword extends Component {
 
   handleOnSubmit = (e) => {
     e.preventDefault()
-    console.log('submit to firebase')
+    alert('Send sendPasswordResetEmail()')
+    // const firebase = getFirebase()
+    // firebase.auth().sendPasswordResetEmail(this.state.email).then(() => {
+    //   console.log('email sent')
+    // }).catch((error) => {
+    //   console.log(error)
+    // })
   }
 
   render() {

@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom'
 class CreateEpisode extends Component {
   state = {
     title: '',
+    airDate: '',
     content: ''
   }
 
@@ -32,6 +33,10 @@ class CreateEpisode extends Component {
           <div className="c-CreateEpisode__form-row">
             <label htmlFor="title">Title</label>
             <input type="text" id="title" onChange={this.handleOnChange} />
+          </div>
+          <div className="c-CreateEpisode__form-row">
+            <label htmlFor="airDate">Air Date</label>
+            <input type="text" id="airDate" onChange={this.handleOnChange} />
           </div>
           <div className="c-CreateEpisode__form-row">
             <label htmlFor="content">Content</label>
