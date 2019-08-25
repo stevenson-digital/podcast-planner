@@ -1,12 +1,28 @@
 export const signIn = (credentials) => {
-  return (dispatch, getState, {getFirebase}) => {
+  return (dispatch, getState, {getFirestore, getFirebase}) => {
     const firebase = getFirebase()
+    const firestore = getFirestore()
 
     firebase.auth().signInWithEmailAndPassword(
       credentials.email,
       credentials.password
+
     ).then(() => {
-      dispatch({type: 'LOGIN_SUCCESS'})
+      // Get the user level
+      firestore.collection('users').get()
+      .then(snapshot => {
+        let userLevel = null
+        
+        // Loop over user documents and match to the ID of newly logged in user
+        snapshot.forEach(function(doc) {
+          if (getState().firebase.auth.uid === doc.id) {
+            userLevel = doc.data().userLevel
+          }
+        })
+
+        dispatch({type: 'LOGIN_SUCCESS', userLevel})
+      })
+
     }).catch((error) => {
       dispatch({type: 'LOGIN_ERROR', error})
     })

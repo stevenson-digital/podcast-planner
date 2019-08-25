@@ -23,6 +23,7 @@ export const createEpisode = (episode) => {
           authorLastName: profile.lastName,
           authorID: authorID,
           showID: showID,
+          allHostNotesReady: false,
           createdAt: new Date()
         }).then(() => {
           dispatch({type: 'CREATE_EPISODE', episode})

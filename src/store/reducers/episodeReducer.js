@@ -1,9 +1,5 @@
 const initState = {
-  episodes: [
-    {id: 1, title: 'Side Projects', content: 'blah blah blah'},
-    {id: 2, title: 'JavaScript Frameworks', content: 'blah blah blah'},
-    {id: 3, title: 'Breaking the mould', content: 'blah blah blah'}
-  ]
+  episodes: []
 }
 
 const episodeReducer = (state = initState, action) => {
