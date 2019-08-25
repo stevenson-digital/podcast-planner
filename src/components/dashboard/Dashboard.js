@@ -39,7 +39,7 @@ const mapStateToProps = (state) => {
 export default compose(
   connect(mapStateToProps),
   firestoreConnect([
-    { collection: 'episodes', orderBy: ['createdAt', 'desc'] },
+    { collection: 'episodes', where: ['showID', '==', 'the-barry-white-show'], orderBy: ['createdAt', 'desc'] },
     { collection: 'notifications', limit: 3, orderBy: ['time', 'desc'] }
   ])
 )(Dashboard)

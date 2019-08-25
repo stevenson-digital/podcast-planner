@@ -1,6 +1,7 @@
 const initState = {
   authError: null,
-  userLevel: null
+  userLevel: null,
+  activeShowID: null
 }
 
 const authReducer = (state = initState, action) => {
@@ -14,18 +15,21 @@ const authReducer = (state = initState, action) => {
       return {
         ...state,
         authError: null,
-        userLevel: action.userLevel
+        userLevel: action.userLevel,
+        activeShowID: 'madness'
       }
     case 'SIGNOUT_SUCCESS':
       return {
         ...state,
-        userLevel: null
+        userLevel: null,
+        activeShowID: null
       }
     case 'SIGNUP_SUCCESS':
       return {
         ...state,
         authError: null,
-        userLevel: action.userLevel
+        userLevel: action.userLevel,
+        activeShowID: 'madness'
       }
     case 'SIGNUP_ERROR':
       return {

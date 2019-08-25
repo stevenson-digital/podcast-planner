@@ -1,5 +1,5 @@
 const initState = {
-  episodes: []
+  createEpisodeError: null
 }
 
 const episodeReducer = (state = initState, action) => {
@@ -7,7 +7,10 @@ const episodeReducer = (state = initState, action) => {
     case 'CREATE_EPISODE':
       return state
     case 'CREATE_EPISODE_ERROR':
-      return state
+      return {
+        ...state,
+        createEpisodeError: action.error.message
+      }
     default:
       return state
   }

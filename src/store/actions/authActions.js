@@ -8,21 +8,7 @@ export const signIn = (credentials) => {
       credentials.password
 
     ).then(() => {
-      // Get the user level
-      firestore.collection('users').get()
-      .then(snapshot => {
-        let userLevel = null
-        
-        // Loop over user documents and match to the ID of newly logged in user
-        snapshot.forEach(function(doc) {
-          if (getState().firebase.auth.uid === doc.id) {
-            userLevel = doc.data().userLevel
-          }
-        })
-
-        dispatch({type: 'LOGIN_SUCCESS', userLevel})
-      })
-
+      dispatch(setUserLevel('login'))
     }).catch((error) => {
       dispatch({type: 'LOGIN_ERROR', error})
     })
@@ -60,14 +46,17 @@ export const signUp = (newUser) => {
       })
     }).then(() => {
       dispatch(addShow(showName, showOwner))
-    }).catch((error) => {
+    }).then(() => {
+      dispatch(setUserLevel('signup'))
+    })
+    .catch((error) => {
       dispatch({type: 'SIGNUP_ERROR', error})
     })
   }
 }
 
 export const addShow = (showName, showOwner) => {
-  return (dispatch, getState, {getFirestore}) => {
+  return (dispatch, {getFirestore}) => {
     const firestore = getFirestore()
     const showID = showName.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, '-').replace("'", '').toLowerCase()
     
@@ -76,24 +65,33 @@ export const addShow = (showName, showOwner) => {
       showName: showName,
       showOwner: showOwner
 
-    }).then(() => {
-      // Get the user level
-      firestore.collection('users').get()
-      .then(snapshot => {
-        let userLevel = null
-        
-        // Loop over user documents and match to the ID of newly logged in user
-        snapshot.forEach(function(doc) {
-          if (getState().firebase.auth.uid === doc.id) {
-            userLevel = doc.data().userLevel
-          }
-        })
-
-        dispatch({type: 'SIGNUP_SUCCESS', userLevel})
-      })
-
     }).catch((error) => {
       dispatch({type: 'SIGNUP_ERROR', error})
+    })
+  }
+}
+
+export const setUserLevel = (signUpOrLogin) => {
+  return (dispatch, getState, {getFirestore}) => {
+    const firestore = getFirestore()
+
+    // Get the user level
+    firestore.collection('users').get()
+    .then(snapshot => {
+      let userLevel = null
+      
+      // Loop over user documents and match to the ID of newly logged in user
+      snapshot.forEach(function(doc) {
+        if (getState().firebase.auth.uid === doc.id) {
+          userLevel = doc.data().userLevel
+        }
+      })
+
+      if (signUpOrLogin === 'login') {
+        dispatch({type: 'LOGIN_SUCCESS', userLevel})
+      } else {
+        dispatch({type: 'SIGNUP_SUCCESS', userLevel})
+      }
     })
   }
 }
