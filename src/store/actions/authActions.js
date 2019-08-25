@@ -1,14 +1,14 @@
 export const signIn = (credentials) => {
-  return (dispatch, getState, {getFirestore, getFirebase}) => {
+  return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase()
-    const firestore = getFirestore()
 
     firebase.auth().signInWithEmailAndPassword(
       credentials.email,
       credentials.password
-
     ).then(() => {
-      dispatch(setUserLevel('login'))
+      dispatch(setUserLevelAndActiveShow())
+    }).then(() => {
+      dispatch({type: 'LOGIN_SUCCESS'})
     }).catch((error) => {
       dispatch({type: 'LOGIN_ERROR', error})
     })
@@ -26,7 +26,7 @@ export const signOut = () => {
 }
 
 export const signUp = (newUser) => {
-  return (dispatch, getState, {getFirebase, getFirestore}) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase()
     const firestore = getFirestore()
     const showName = newUser.showName
@@ -47,7 +47,9 @@ export const signUp = (newUser) => {
     }).then(() => {
       dispatch(addShow(showName, showOwner))
     }).then(() => {
-      dispatch(setUserLevel('signup'))
+      dispatch(setUserLevelAndActiveShow())
+    }).then(() => {
+      dispatch({type: 'SIGNUP_SUCCESS'})
     })
     .catch((error) => {
       dispatch({type: 'SIGNUP_ERROR', error})
@@ -56,7 +58,7 @@ export const signUp = (newUser) => {
 }
 
 export const addShow = (showName, showOwner) => {
-  return (dispatch, {getFirestore}) => {
+  return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore()
     const showID = showName.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, '-').replace("'", '').toLowerCase()
     
@@ -64,34 +66,51 @@ export const addShow = (showName, showOwner) => {
       id: showID,
       showName: showName,
       showOwner: showOwner
-
     }).catch((error) => {
       dispatch({type: 'SIGNUP_ERROR', error})
     })
   }
 }
 
-export const setUserLevel = (signUpOrLogin) => {
-  return (dispatch, getState, {getFirestore}) => {
+export const setUserLevelAndActiveShow = () => {
+  return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore()
 
     // Get the user level
     firestore.collection('users').get()
     .then(snapshot => {
       let userLevel = null
+      let activeShow = null
       
       // Loop over user documents and match to the ID of newly logged in user
       snapshot.forEach(function(doc) {
         if (getState().firebase.auth.uid === doc.id) {
-          userLevel = doc.data().userLevel
+          const data = doc.data()
+          userLevel = data.userLevel
+          activeShow = data.showName.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, '-').replace("'", '').toLowerCase()
         }
       })
 
-      if (signUpOrLogin === 'login') {
-        dispatch({type: 'LOGIN_SUCCESS', userLevel})
-      } else {
-        dispatch({type: 'SIGNUP_SUCCESS', userLevel})
-      }
+      dispatch({type: 'SET_USER_LEVEL', userLevel})
+      dispatch({type: 'SET_ACTIVE_SHOW', activeShow})
+
+      setEpisodes(activeShow)
     })
+
+    const setEpisodes = (activeShow) => {
+      firestore.collection('episodes')
+      .where('showID', '==', activeShow)
+      .orderBy('createdAt', 'desc')
+      .get()
+      .then(snapshot => {
+        let episodes = []
+
+        snapshot.forEach(episode => {
+          episodes.push(episode.data())
+        })
+
+        dispatch({type: 'SET_USER_EPISODES', episodes})
+      })
+    }
   }
 }
