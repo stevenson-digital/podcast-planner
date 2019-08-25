@@ -24,7 +24,8 @@ const authReducer = (state = initState, action) => {
     case 'SIGNUP_SUCCESS':
       return {
         ...state,
-        authError: null
+        authError: null,
+        userLevel: action.userLevel
       }
     case 'SIGNUP_ERROR':
       return {
