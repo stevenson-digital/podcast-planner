@@ -80,26 +80,29 @@ export const setUserLevelAndActiveShow = () => {
     firestore.collection('users').get()
     .then(snapshot => {
       let userLevel = null
-      let activeShow = null
+      let activeShowID = null
+      let activeShowTitle = null
       
       // Loop over user documents and match to the ID of newly logged in user
       snapshot.forEach(function(doc) {
         if (getState().firebase.auth.uid === doc.id) {
           const data = doc.data()
           userLevel = data.userLevel
-          activeShow = data.showName.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, '-').replace("'", '').toLowerCase()
+          activeShowID = data.showName.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, '-').replace("'", '').toLowerCase()
+          activeShowTitle = data.showName
         }
       })
 
       dispatch({type: 'SET_USER_LEVEL', userLevel})
-      dispatch({type: 'SET_ACTIVE_SHOW', activeShow})
+      dispatch({type: 'SET_ACTIVE_SHOW_ID', activeShowID})
+      dispatch({type: 'SET_ACTIVE_SHOW_TITLE', activeShowTitle})
 
-      setEpisodes(activeShow)
+      setEpisodes(activeShowID)
     })
 
-    const setEpisodes = (activeShow) => {
+    const setEpisodes = (activeShowID) => {
       firestore.collection('episodes')
-      .where('showID', '==', activeShow)
+      .where('showID', '==', activeShowID)
       .orderBy('createdAt', 'desc')
       .get()
       .then(snapshot => {

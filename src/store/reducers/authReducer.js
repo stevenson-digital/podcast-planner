@@ -1,7 +1,8 @@
 const initState = {
   authError: null,
   userLevel: null,
-  activeShow: null
+  activeShowID: null,
+  activeShowTitle: null
 }
 
 const authReducer = (state = initState, action) => {
@@ -37,10 +38,15 @@ const authReducer = (state = initState, action) => {
         ...state,
         userLevel: action.userLevel
       }
-    case 'SET_ACTIVE_SHOW':
+    case 'SET_ACTIVE_SHOW_ID':
       return {
         ...state,
-        activeShow: action.activeShow
+        activeShowID: action.activeShowID
+      }
+    case 'SET_ACTIVE_SHOW_TITLE':
+      return {
+        ...state,
+        activeShowTitle: action.activeShowTitle
       }
     default:
       return state

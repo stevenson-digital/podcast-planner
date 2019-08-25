@@ -5,11 +5,16 @@ import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
 import { Redirect } from 'react-router-dom'
-import { getFirestore } from 'redux-firestore'
 
 class Dashboard extends Component {
   render() {
-    const { auth, notifications, userLevel, activeShow, episodes } = this.props
+    const {
+      auth,
+      notifications,
+      userLevel,
+      activeShowTitle,
+      episodes
+    } = this.props
 
     if (!auth.uid) return <Redirect to="/signin" />
 
@@ -18,7 +23,7 @@ class Dashboard extends Component {
     return (
       <div className="c-Dashboard">
         <div className="c-Dashboard__episodes">
-          <h1>{activeShow}</h1>
+          <h1>{activeShowTitle}</h1>
           <EpisodeList episodes={episodes} />
         </div>
         <div className="c-Dashboard__notifications">
@@ -34,7 +39,7 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     notifications: state.firestore.ordered.notifications,
     userLevel: state.auth.userLevel,
-    activeShow: state.auth.activeShow,
+    activeShowTitle: state.auth.activeShowTitle,
     episodes: state.episode.userEpisodes
   }
 }
