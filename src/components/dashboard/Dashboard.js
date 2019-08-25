@@ -8,9 +8,11 @@ import { Redirect } from 'react-router-dom'
 
 class Dashboard extends Component {
   render() {
-    const { episodes, auth, notifications } = this.props
+    const { episodes, auth, notifications, userLevel } = this.props
 
     if (!auth.uid) return <Redirect to="/signin" />
+
+    const displayNotifications = (userLevel === 'master') ? <Notifications notifications={notifications} /> : null
 
     return (
       <div className="c-Dashboard">
@@ -18,7 +20,7 @@ class Dashboard extends Component {
           <EpisodeList episodes={episodes} />
         </div>
         <div className="c-Dashboard__notifications">
-          <Notifications notifications={notifications} />
+          {displayNotifications}
         </div>
       </div>
     )
@@ -29,7 +31,8 @@ const mapStateToProps = (state) => {
   return {
     episodes: state.firestore.ordered.episodes,
     auth: state.firebase.auth,
-    notifications: state.firestore.ordered.notifications
+    notifications: state.firestore.ordered.notifications,
+    userLevel: state.auth.userLevel
   }
 }
 
