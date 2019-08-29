@@ -16,9 +16,6 @@ const EpisodeDetails = (props) => {
           <div className="c-EpisodeDetails__title">
             {episode.title}
           </div>
-          <p className="c-EpisodeDetails__desc">
-          {episode.content}
-          </p>
           <p className="c-EpisodeDetails__date">
             Air Date: currently 'createdAt' - {dayjs(episode.createdAt.toDate()).format('DD/MM/YYYY')}
           </p>

@@ -33,3 +33,9 @@ export const createEpisode = (episode) => {
       })
   }
 }
+
+export const loadMoreEpisodes = (page, userID, showID) => {
+  return (dispatch, getState, { getFirestore, getFirebase }) => {
+    console.log('loadMoreEpisodes:', page, userID, showID)
+  }
+}
